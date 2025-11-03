@@ -4,25 +4,25 @@
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h1>Waste Data Management</h1>
+    <h1>Transactions Management</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Home</a></li>
-        <li class="breadcrumb-item active">Waste Data</li>
+        <li class="breadcrumb-item active">Transactions</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
 
-  <section class="section waste-data-section">
+  <section class="section transactions-section">
     <div class="row">
       <div class="col-lg-12">
 
         <div class="card">
           <div class="card-body">
             <div class="card-header-flex">
-              <h5 class="card-title">Waste Category List</h5>
+              <h5 class="card-title">Transaction History</h5>
               <a href="#" class="btn btn-success add-btn">
-                <i class="bi bi-plus-circle"></i> Add Waste Type
+                <i class="bi bi-plus-circle"></i> Add Transaction
               </a>
             </div>
 
@@ -30,31 +30,37 @@
             <table class="table datatable">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Category</th>
-                  <th scope="col">Price/kg</th>
-                  <th scope="col">Last Updated</th>
+                  <th scope="col">ID</th>
+                  <th scope="col">User</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Total Weight (kg)</th>
+                  <th scope="col">Total Price</th>
+                  <th scope="col">Status</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">1</th>
-                  <td>Plastic Bottles</td>
-                  <td>Rp 3,500</td>
-                  <td>2024-05-20</td>
+                  <th scope="row">#TRX001</th>
+                  <td>Andi</td>
+                  <td>2024-05-21</td>
+                  <td>5.2</td>
+                  <td>Rp 18,200</td>
+                  <td><span class="badge bg-success">Completed</span></td>
                   <td>
-                    <a href="#" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a>
+                    <a href="#" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
                     <a href="#" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
                   </td>
                 </tr>
                 <tr>
-                  <th scope="row">2</th>
-                  <td>Cardboard</td>
-                  <td>Rp 2,000</td>
-                  <td>2024-05-18</td>
+                  <th scope="row">#TRX002</th>
+                  <td>Siti</td>
+                  <td>2024-05-20</td>
+                  <td>10.0</td>
+                  <td>Rp 20,000</td>
+                  <td><span class="badge bg-warning">Pending</span></td>
                   <td>
-                    <a href="#" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a>
+                    <a href="#" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
                     <a href="#" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
                   </td>
                 </tr>

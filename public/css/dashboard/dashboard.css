@@ -708,12 +708,17 @@ h6 {
   color: #fff;
 }
 
-.sidebar-nav .nav-link:hover {
+.sidebar-nav .nav-link.collapsed:hover {
   color: #4154f1;
   background: #f6f9ff;
 }
 
-.sidebar-nav .nav-link:hover i {
+.sidebar-nav .nav-link:not(.collapsed) {
+  color: #fff;
+  background: var(--primary-green);
+}
+
+.sidebar-nav .nav-link.collapsed:hover i {
   color: #4154f1;
 }
 
@@ -1351,12 +1356,22 @@ body.dark-mode .table {
   color: var(--text-secondary);
 }
 
+body.dark-mode .table td,
+body.dark-mode .table th {
+  color: var(--text-secondary);
+}
+
 body.dark-mode .table thead th {
   color: var(--text-primary);
 }
 
 body.dark-mode .table tbody tr:hover {
   background-color: #374151;
+}
+
+body.dark-mode .breadcrumb,
+body.dark-mode .breadcrumb a {
+  color: var(--text-secondary);
 }
 
 body.dark-mode .datatable-input,
@@ -1410,4 +1425,57 @@ body.dark-mode .footer .credits {
   text-align: center;
   font-size: 13px;
   color: #012970;
+}
+
+/*--------------------------------------------------------------
+# Users Layout
+--------------------------------------------------------------*/
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+}
+
+.card-header-flex .card-title {
+  padding: 0;
+  margin: 0;
+}
+
+.add-btn {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.datatable {
+  margin-top: 20px;
+}
+
+.datatable th,
+.datatable td {
+  vertical-align: middle;
+}
+
+.datatable .badge {
+  padding: 0.5em 0.9em;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.datatable td .btn {
+  margin-right: 5px;
+}
+
+.user-status-active {
+  background-color: #C6F6D5 !important;
+  color: #22543D;
+}
+
+.user-status-inactive {
+  background-color: #FED7D7 !important;
+  color: #742A2A;
 }
