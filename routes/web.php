@@ -1,23 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AuthController;
 
-Route::get('/dashboard', function () {
-    return view('dashboard/home');
-});
+// Rute untuk otentikasi (Login & Logout)
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/login', function () {
-    return view('login/login');
-});
-
-Route::get('/users', function () {
-    return view('dashboard/userslayout');
-});
-
-Route::get('/waste-data', function () {
-    return view('dashboard/wastedatalayout');
-});
-
-Route::get('/transactions', function () {
-    return view('dashboard/transactionlayout');
+Route::middleware(['is_logged_in'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'home']);
+    Route::get('/users', [DashboardController::class, 'users']);
+    Route::get('/waste-data', [DashboardController::class, 'wasteData']);
+    Route::get('/transactions', [DashboardController::class, 'transactions']);
 });

@@ -15,8 +15,8 @@
 
             <!-- Total Users Card -->
             <div class="col-lg-4 col-md-6">
-              <div class="card info-card sales-card">
-                <div class="card-body">
+              <div class="card info-card sales-card h-100">
+                <div class="card-body d-flex align-items-center">
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-people"></i>

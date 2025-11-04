@@ -28,18 +28,24 @@
                 <img src="{{ asset('images/login/logomallsampah.png') }}" alt="login-logo" class="logo">
               </div>
               <p class="login-card-description">Sign into your account</p>
-              <form action="{{ url('/dashboard') }}" method="GET">
+              <form action="{{ url('/login') }}" method="POST">
+                  @csrf
                   <div class="form-group">
                     <p>Username</p>
                     <label for="email" class="sr-only">Email</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Your Username">
+                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Your Username" value="{{ old('email') }}" required>
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                   </div>
                   <div class="form-group mb-4">
                     <p>Password</p>
                     <label for="password" class="sr-only">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="Your Password">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Your Password" required>
                   </div>
-                  <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Login">
+                  <button name="login" id="login" class="btn btn-block login-btn mb-4" type="submit">Login</button>
               </form>
                 <!-- <a href="#!" class="forgot-password-link">Forgot password?</a>
                 <p class="login-card-footer-text">Don't have an account? <a href="#!" class="text-reset">Register here</a></p>
