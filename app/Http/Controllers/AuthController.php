@@ -19,21 +19,20 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if ($credentials['email'] === 'admin@mallsampah.com' && $credentials['password'] === 'admin123') {
-            session(['is_logged_in' => true]); // Menandai sesi sebagai sudah login
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match.',
+            'email' => 'Email atau password salah.',
         ])->onlyInput('email');
     }
 
     public function logout(Request $request)
     {
-        // Auth::logout(); // Tidak digunakan karena kita tidak pakai Auth::attempt
+        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

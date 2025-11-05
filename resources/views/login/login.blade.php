@@ -33,7 +33,7 @@
                   <div class="form-group">
                     <p>Username</p>
                     <label for="email" class="sr-only">Email</label>
-                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Your Username" value="{{ old('email') }}" required>
+                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Your Email Address" value="{{ old('email') }}" required autofocus>
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

@@ -23,7 +23,7 @@
               <i class="bi bi-people"></i>
             </div>
             <div class="ps-3">
-              <h6>1,580</h6>
+              <h6>{{ count($users) }}</h6>
               <span class="text-muted small pt-2 ps-1">Total Users</span>
             </div>
           </div>
@@ -88,43 +88,21 @@
             <table class="table datatable">
               <thead>
                 <tr>
-                  <th scope="col">Nomor</th>
-                  <th scope="col">Name</th>
+                  <th scope="col">No</th>
+                  <th scope="col">Nama</th>
+                  <th scope="col">Email</th>
                   <th scope="col">Alamat</th>
                   <th scope="col">Nomor Telpon</th>
                 </tr>
               </thead>
               <tbody>
-                @php
-                  $users = [
-                      ['Andi Saputra', 'Jl. Merdeka No. 1, Jakarta', '081234567890'],
-                      ['Budi Hartono', 'Jl. Sudirman No. 2, Bandung', '081234567891'],
-                      ['Citra Lestari', 'Jl. Gatot Subroto No. 3, Surabaya', '081234567892'],
-                      ['Dewi Anggraini', 'Jl. Diponegoro No. 4, Semarang', '081234567893'],
-                      ['Eko Prasetyo', 'Jl. Pahlawan No. 5, Yogyakarta', '081234567894'],
-                      ['Fitriani', 'Jl. Ahmad Yani No. 6, Medan', '081234567895'],
-                      ['Gunawan', 'Jl. Imam Bonjol No. 7, Makassar', '081234567896'],
-                      ['Hesti Wulandari', 'Jl. Teuku Umar No. 8, Palembang', '081234567897'],
-                      ['Indra Wijaya', 'Jl. Gajah Mada No. 9, Denpasar', '081234567898'],
-                      ['Joko Susilo', 'Jl. Asia Afrika No. 10, Jakarta', '081234567899'],
-                      ['Kartika Sari', 'Jl. Cihampelas No. 11, Bandung', '081345678900'],
-                      ['Lia Amelia', 'Jl. Tunjungan No. 12, Surabaya', '081345678901'],
-                      ['Muhammad Rizky', 'Jl. Pandanaran No. 13, Semarang', '081345678902'],
-                      ['Nadia Putri', 'Jl. Malioboro No. 14, Yogyakarta', '081345678903'],
-                      ['Oscar Mahendra', 'Jl. Sisingamangaraja No. 15, Medan', '081345678904'],
-                      ['Putri Ayu', 'Jl. Sultan Hasanuddin No. 16, Makassar', '081345678905'],
-                      ['Rian Hidayat', 'Jl. Jenderal Sudirman No. 17, Palembang', '081345678906'],
-                      ['Siska Permata', 'Jl. Sunset Road No. 18, Denpasar', '081345678907'],
-                      ['Taufik Akbar', 'Jl. Kebon Sirih No. 19, Jakarta', '081345678908'],
-                      ['Utari Dewi', 'Jl. Braga No. 20, Bandung', '081345678909'],
-                  ];
-                @endphp
                 @foreach ($users as $index => $user)
                 <tr>
                   <th scope="row">{{ $index + 1 }}</th>
-                  <td>{{ $user[0] }}</td>
-                  <td>{{ $user[1] }}</td>
-                  <td>{{ $user[2] }}</td>
+                  <td>{{ $user->name }}</td>
+                  <td>{{ $user->email }}</td>
+                  <td>{{ $user->alamat ?? 'N/A' }}</td>
+                  <td>{{ $user->nomor_telpon ?? 'N/A' }}</td>
                 </tr>
                 @endforeach
               </tbody>

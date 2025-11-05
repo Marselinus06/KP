@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+
     public function home()
     {
         return view('dashboard.home');
@@ -13,7 +15,8 @@ class DashboardController extends Controller
 
     public function users()
     {
-        return view('dashboard.userslayout');
+        $users = User::all();
+        return view('dashboard.userslayout', ['users' => $users]);
     }
 
     public function wasteData()
