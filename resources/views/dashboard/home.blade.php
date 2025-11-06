@@ -5,7 +5,13 @@
 
     <div class="pagetitle mb-4">
       <h1>Hello, Admin</h1>
-    </div><!-- End Page Title -->
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
 
     <section class="section dashboard">
       <div class="row">
@@ -32,13 +38,7 @@
 
             <!-- Waste Collected Card -->
             <div class="col-lg-4 col-md-6">
-              <div class="card info-card revenue-card">
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
+              <div class="card info-card revenue-card h-100">
                 <div class="card-body">
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -55,7 +55,7 @@
 
             <!-- Transactions Card -->
             <div class="col-lg-4 col-md-6">
-              <div class="card info-card customers-card">
+              <div class="card info-card customers-card h-100">
                 <div class="card-body">
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
