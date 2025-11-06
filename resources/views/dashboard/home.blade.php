@@ -22,8 +22,8 @@
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>1,580</h6>
-                      <span class="text-muted small pt-2 ps-1">Total Users</span>
+                      <h6>{{ $totalUsers ?? 'N/A' }}</h6>
+                      <span class="text-muted small pt-2 ps-1">Total Pengguna</span>
                     </div>
                   </div>
                 </div>
@@ -45,8 +45,8 @@
                       <i class="ri-leaf-line"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>12,450<span class="text-muted small">kg</span></h6>
-                      <span class="text-muted small pt-2 ps-1">Waste Collected</span>
+                      <h6>{{ $totalWaste ?? 0 }}<span class="text-muted small">kg</span></h6>
+                      <span class="text-muted small pt-2 ps-1">Sampah Terkumpul</span>
                     </div>
                   </div>
                 </div>
@@ -62,8 +62,8 @@
                       <i class="bi bi-arrow-left-right"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>3,200</h6>
-                      <span class="text-muted small pt-2 ps-1">Transactions</span>
+                      <h6>{{ $totalTransactions ?? 0 }}</h6>
+                      <span class="text-muted small pt-2 ps-1">Transaksi</span>
                     </div>
                   </div>
                 </div>
@@ -74,15 +74,15 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">User Statistics</h5>
+                  <h5 class="card-title">Statistik Pengguna</h5>
                   <!-- Line Chart -->
                   <div id="reportsChart"></div>
                   <script>
                     document.addEventListener("DOMContentLoaded", () => {
                       new ApexCharts(document.querySelector("#reportsChart"), {
                         series: [{
-                          name: 'Users',
-                          data: [150, 230, 220, 270, 280, 320, 310, 380, 420],
+                          name: 'Pengguna Baru',
+                          data: {!! json_encode($userStats['data'] ?? []) !!},
                         }],
                         chart: {
                           height: 350,
@@ -119,7 +119,7 @@
                         },
                         xaxis: {
                           type: 'category',
-                          categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Dec"],
+                          categories: {!! json_encode($userStats['categories'] ?? []) !!},
                           labels: {
                             style: { colors: '#9ca3af' }
                           }
@@ -144,41 +144,25 @@
             <div class="col-12">
               <div class="card recent-sales overflow-auto">
                 <div class="card-body">
-                  <h5 class="card-title">Recent Transactions</h5>
+                  <h5 class="card-title">Transaksi Terkini</h5>
                   <table class="table table-borderless datatable">
                     <thead>
                       <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">User</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Pengguna</th>
                         <th scope="col">Status</th>
                       </tr>
                     </thead>
                     <tbody>
+                      @forelse ($recentTransactions as $transaction)
                       <tr>
-                        <td>Apr 15, 2024</td>
-                        <td>Andi</td>
-                        <td><span class="badge bg-success">Completed</span></td>
+                        <td>{{ $transaction->created_at->format('d M Y') }}</td>
+                        <td>{{ $transaction->user->name }}</td>
+                        <td><span class="badge bg-{{ $transaction->status == 'Completed' ? 'success' : 'warning' }}">{{ $transaction->status }}</span></td>
                       </tr>
-                      <tr>
-                        <td>Apr 15, 2024</td>
-                        <td>Siti</td>
-                        <td><span class="badge bg-warning">Pending</span></td>
-                      </tr>
-                      <tr>
-                        <td>Apr 15, 2024</td>
-                        <td>Buéi</td>
-                        <td><span class="badge bg-success">Completed</span></td>
-                      </tr>
-                      <tr>
-                        <td>Apr 15, 2024</td>
-                        <td>Maya</td>
-                        <td><span class="badge bg-success">Completed</span></td>
-                      </tr>
-                      <tr>
-                        <td>Apr 15, 2024</td>
-                        <td>Rinà</td>
-                        <td><span class="badge bg-warning">Pending</span></td>
-                      </tr>
+                      @empty
+                      <tr><td colspan="3" class="text-center">Tidak ada transaksi terkini.</td></tr>
+                      @endforelse
                     </tbody>
                   </table>
                 </div>

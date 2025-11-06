@@ -78,7 +78,7 @@
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{{ url('/logout') }}">
                 <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
+                <span>{{ __('Sign Out') }}</span>
               </a>
             </li>
 
@@ -98,28 +98,28 @@
       <li class="nav-item">
         <a class="nav-link {{ request()->is('dashboard') ? '' : 'collapsed' }}" href="{{ url('/dashboard') }}">
           <i class="bi bi-house-door"></i>
-          <span>Dashboard</span>
+          <span>{{ __('Dashboard') }}</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
         <a class="nav-link {{ request()->is('users') ? '' : 'collapsed' }}" href="{{ url('/users') }}">
           <i class="bi bi-people"></i>
-          <span>Users</span>
+          <span>{{ __('Users') }}</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link {{ request()->is('waste-data') ? '' : 'collapsed' }}" href="{{ url('/waste-data') }}">
           <i class="bi bi-trash"></i>
-          <span>Waste Data</span>
+          <span>{{ __('Waste Data') }}</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link {{ request()->is('transactions') ? '' : 'collapsed' }}" href="{{ url('/transactions') }}">
           <i class="bi bi-arrow-left-right"></i>
-          <span>Transactions</span>
+          <span>{{ __('Transactions') }}</span>
         </a>
       </li>
 
@@ -128,6 +128,20 @@
   </aside><!-- End Sidebar-->
 
   @yield('main')
+
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    @if (session('success'))
+    <div id="success-toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          {{ session('success') }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+    @endif
+  </div>
+
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -149,5 +163,15 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var successToast = document.getElementById('success-toast');
+      if (successToast) {
+        var toast = new bootstrap.Toast(successToast);
+        toast.show();
+      }
+    });
+  </script>
 
 </body>

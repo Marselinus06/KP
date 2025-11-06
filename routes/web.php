@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WasteDataController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
@@ -16,7 +19,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'home'])->name('dashboard');
-    Route::get('/users', [DashboardController::class, 'users']);
-    Route::get('/waste-data', [DashboardController::class, 'wasteData']);
-    Route::get('/transactions', [DashboardController::class, 'transactions']);
+    Route::resource('users', UserController::class);
+    Route::resource('waste-data', WasteDataController::class);
+    Route::resource('transactions', TransactionController::class);
 });
