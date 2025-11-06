@@ -26,7 +26,7 @@
               </a>
             </div>
 
-            <!-- Table with stripped rows -->
+            <!-- Table Start -->
             <table class="table datatable">
               <thead>
                 <tr>
@@ -64,7 +64,7 @@
                 @endforelse
               </tbody>
             </table>
-            <!-- End Table with stripped rows -->
+            <!-- End Table -->
 
           </div>
         </div>

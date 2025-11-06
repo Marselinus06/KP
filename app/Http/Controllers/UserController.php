@@ -91,7 +91,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        // Jangan hapus admin utama (misal: user dengan id 1)
+
         if ($user->id === 1) {
             return redirect()->route('users.index')
                              ->with('error', 'Admin utama tidak dapat dihapus.');

@@ -21,7 +21,7 @@
           <div class="card-body">
             <h5 class="card-title">User Data</h5>
 
-            <!-- Table with stripped rows -->
+            <!-- Table Start -->
             <table class="table datatable">
               <thead>
                 <tr>
@@ -42,7 +42,7 @@
                 @endforeach
               </tbody>
             </table>
-            <!-- End Table with stripped rows -->
+            <!-- End Table -->
 
           </div>
         </div>

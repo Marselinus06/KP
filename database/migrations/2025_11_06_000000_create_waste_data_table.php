@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('waste_data', function (Blueprint $table) {
             $table->id();
-            $table->string('category'); // Kolom ini yang sebelumnya mungkin hilang atau salah
+            $table->string('category');
             $table->unsignedInteger('price_per_kg');
             $table->timestamps();
         });

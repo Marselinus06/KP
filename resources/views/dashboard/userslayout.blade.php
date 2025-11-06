@@ -19,22 +19,22 @@
         <div class="card">
           <div class="card-body">
             <div class="card-header-flex">
-              <h5 class="card-title">User Data (Total: {{ count($users) }})</h5>
+              <h5 class="card-title">Data Pengguna (Total: {{ count($users) }})</h5>
               <a href="{{ route('users.create') }}" class="btn btn-success add-btn">
-                <i class="bi bi-plus-circle"></i> Add User
+                <i class="bi bi-plus-circle"></i> Tambah Pengguna
               </a>
             </div>
 
-            <!-- Table with stripped rows -->
+            <!-- Table Start -->
             <table class="table datatable">
               <thead>
                 <tr>
                   <th scope="col">No</th>
-                  <th scope="col">Name</th>
+                  <th scope="col">Nama</th>
                   <th scope="col">Email</th>
-                  <th scope="col">Role</th>
-                  <th scope="col">Phone Number</th>
-                  <th scope="col">Actions</th>
+                  <th scope="col">Peran</th>
+                  <th scope="col">Nomor Telepon</th>
+                  <th scope="col">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -61,7 +61,7 @@
                 @endforelse
               </tbody>
             </table>
-            <!-- End Table with stripped rows -->
+            <!-- End Table -->
 
           </div>
         </div>

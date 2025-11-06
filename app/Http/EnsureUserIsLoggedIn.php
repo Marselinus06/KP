@@ -17,9 +17,9 @@ class EnsureUserIsLoggedIn
      */
     public function handle(Request $request, Closure $next)
     {
-        // Memeriksa apakah pengguna belum terotentikasi
+        
         if (!Auth::check()) {
-            // Jika belum, arahkan ke halaman login.
+            
             return redirect()->route('login');
         }
 

@@ -45,7 +45,7 @@ class WasteDataController extends Controller
      */
     public function show(WasteData $wasteData)
     {
-        // Tidak digunakan untuk saat ini, bisa di-skip
+
         return redirect()->route('waste-data.index');
     }
 

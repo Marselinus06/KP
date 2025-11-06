@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'nomor_telpon',
+        'alamat',
     ];
 
     /**
@@ -55,5 +58,13 @@ class User extends Authenticatable
     public function hasRole(string $role): bool
     {
         return $this->role === $role;
+    }
+
+    /**
+     * Get the transactions for the user.
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

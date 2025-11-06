@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $totalTransactions = Transaction::count();
         $recentTransactions = Transaction::with('user')->latest()->take(5)->get();
 
-        // Data dinamis untuk statistik pengguna (contoh: pengguna baru per bulan dalam 6 bulan terakhir)
+        
         $userStatsData = User::select(
             DB::raw('COUNT(id) as count'),
             DB::raw("DATE_FORMAT(created_at, '%b') as month")
