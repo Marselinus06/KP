@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -19,8 +19,7 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, $role)
     {
         if (!Auth::check() || !Auth::user()->hasRole($role)) {
-            // Arahkan atau berikan respon 'unauthorized' jika pengguna tidak memiliki peran yang sesuai.
-            // Anda bisa mengarahkan ke halaman lain atau menampilkan halaman 403.
+
             abort(403, 'ANDA TIDAK MEMILIKI AKSES.');
         }
 
