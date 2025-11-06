@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('status')->default('Pending'); // e.g., Pending, Completed, Cancelled
+            $table->decimal('total_weight', 8, 2)->default(0); // Total weight in kg
+            $table->decimal('total_price', 15, 2)->default(0); // Total price in IDR
             $table->timestamps();
         });
     }
