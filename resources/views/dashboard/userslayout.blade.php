@@ -19,9 +19,9 @@
         <div class="card">
           <div class="card-body">
             <div class="card-header-flex">
-              <h5 class="card-title">Data Pengguna (Total: {{ count($users) }})</h5>
+              <h5 class="card-title">User Data (Total: {{ count($users) }})</h5>
               <a href="{{ route('users.create') }}" class="btn btn-success add-btn">
-                <i class="bi bi-plus-circle"></i> Tambah Pengguna
+                <i class="bi bi-plus-circle"></i> Add User
               </a>
             </div>
 
@@ -30,11 +30,11 @@
               <thead>
                 <tr>
                   <th scope="col">No</th>
-                  <th scope="col">Nama</th>
+                  <th scope="col">Name</th>
                   <th scope="col">Email</th>
-                  <th scope="col">Peran</th>
-                  <th scope="col">Nomor Telepon</th>
-                  <th scope="col">Aksi</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Phone Number</th>
+                  <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -47,7 +47,7 @@
                   <td>{{ $user->nomor_telpon ?? 'N/A' }}</td>
                   <td>
                     <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a>
-                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Anda yakin ingin menghapus pengguna ini?');">
+                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
                       @csrf
                       @method('DELETE')
                       <button type="submit" class="btn btn-sm btn-danger" {{ $user->id === 1 ? 'disabled' : '' }}><i class="bi bi-trash"></i></button>
@@ -56,7 +56,7 @@
                 </tr>
                 @empty
                   <tr>
-                    <td colspan="6" class="text-center">Tidak ada data pengguna.</td>
+                    <td colspan="6" class="text-center">No user data.</td>
                   </tr>
                 @endforelse
               </tbody>

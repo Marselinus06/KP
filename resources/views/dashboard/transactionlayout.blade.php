@@ -50,16 +50,16 @@
                     <td><span class="badge bg-{{ $transaction->status == 'Completed' ? 'success' : 'warning' }}">{{ $transaction->status }}</span></td>
                     <td>
                       <a href="{{ route('transactions.show', $transaction->id) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
-                      <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;">
+                      <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Anda yakin ingin menghapus transaksi ini?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Anda yakin ingin menghapus transaksi ini?')"><i class="bi bi-trash"></i></button>
+                        <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
                       </form>
                     </td>
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="7" class="text-center">Tidak ada data transaksi.</td>
+                    <td colspan="7" class="text-center">No transaction data.</td>
                   </tr>
                 @endforelse
               </tbody>

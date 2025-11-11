@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('transaction_id')->constrained()->onDelete('cascade');
             $table->foreignId('waste_data_id')->constrained('waste_data')->onDelete('cascade');
-            $table->decimal('weight', 8, 2);
+            $table->decimal('weight', 15, 2);
             $table->decimal('price', 15, 2);
             $table->timestamps();
         });

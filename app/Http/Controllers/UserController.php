@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('dashboard.users.create');
+        return view('dashboard.users_create');
     }
 
     /**
@@ -50,7 +50,7 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('users.index')
-                         ->with('success', 'Pengguna baru berhasil ditambahkan.');
+                         ->with('success', 'New user added successfully.');
     }
 
     /**
@@ -58,7 +58,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('dashboard.users.edit', compact('user'));
+        return view('dashboard.users_edit', compact('user'));
     }
 
     /**
@@ -83,7 +83,7 @@ class UserController extends Controller
         $user->update($data);
 
         return redirect()->route('users.index')
-                         ->with('success', 'Data pengguna berhasil diperbarui.');
+                         ->with('success', 'User data updated successfully.');
     }
 
     /**
@@ -94,12 +94,12 @@ class UserController extends Controller
 
         if ($user->id === 1) {
             return redirect()->route('users.index')
-                             ->with('error', 'Admin utama tidak dapat dihapus.');
+                             ->with('error', 'Main admin cannot be deleted.');
         }
 
         $user->delete();
 
         return redirect()->route('users.index')
-                         ->with('success', 'Pengguna berhasil dihapus.');
+                         ->with('success', 'User successfully deleted.');
     }
 }

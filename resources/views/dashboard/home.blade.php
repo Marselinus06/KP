@@ -144,12 +144,12 @@
             <div class="col-12">
               <div class="card recent-sales overflow-auto">
                 <div class="card-body">
-                  <h5 class="card-title">Transaksi Terkini</h5>
+                  <h5 class="card-title">Latest Transactions</h5>
                   <table class="table table-borderless datatable">
                     <thead>
                       <tr>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Pengguna</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">User</th>
                         <th scope="col">Status</th>
                       </tr>
                     </thead>
@@ -161,7 +161,7 @@
                         <td><span class="badge bg-{{ $transaction->status == 'Completed' ? 'success' : 'warning' }}">{{ $transaction->status }}</span></td>
                       </tr>
                       @empty
-                      <tr><td colspan="3" class="text-center">Tidak ada transaksi terkini.</td></tr>
+                      <tr><td colspan="3" class="text-center">There are no recent transactions.</td></tr>
                       @endforelse
                     </tbody>
                   </table>

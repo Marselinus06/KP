@@ -21,7 +21,7 @@ class WasteDataController extends Controller
      */
     public function create()
     {
-        return view('dashboard.waste.create');
+        return view('dashboard.wastetype_create');
     }
 
     /**
@@ -54,7 +54,7 @@ class WasteDataController extends Controller
      */
     public function edit(WasteData $wasteData)
     {
-        return view('dashboard.waste.edit', compact('wasteData'));
+        return view('dashboard.wastetype_edit', compact('wasteData'));
     }
 
     /**
