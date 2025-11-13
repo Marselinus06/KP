@@ -7,6 +7,8 @@ use App\Models\TransactionDetail;
 use App\Models\User;
 use App\Models\WasteData;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreTransactionRequest;
+use App\Http\Requests\UpdateTransactionRequest;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
@@ -24,60 +26,30 @@ class TransactionController extends Controller
         return view('dashboard.transaction_create', compact('users', 'wasteData'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'status' => 'required|string',
-            'details' => 'required|array|min:1',
-            'details.*.waste_data_id' => 'required|exists:waste_data,id',
-            'details.*.weight' => 'required|numeric|min:0.1',
-        ]);
-
+    public function store(StoreTransactionRequest $request) {
         DB::beginTransaction();
         try {
-            $totalWeight = 0;
-            $totalPrice = 0;
+            $totals = $this->calculateTotals($request->details);
 
             $transaction = Transaction::create([
                 'user_id' => $request->user_id,
                 'status' => $request->status,
+                'total_weight' => $totals['totalWeight'],
+                'total_price' => $totals['totalPrice'],
             ]);
 
-            foreach ($request->details as $detail) {
-                $waste = WasteData::find($detail['waste_data_id']);
-                $price = $waste->price_per_kg * $detail['weight'];
-
-                TransactionDetail::create([
-                    'transaction_id' => $transaction->id,
-                    'waste_data_id' => $detail['waste_data_id'],
-                    'weight' => $detail['weight'],
-                    'price' => $price,
-                ]);
-
-                $totalWeight += $detail['weight'];
-                $totalPrice += $price;
-            }
-
-            // Update total di transaksi utama
-            $transaction->update([
-                'total_weight' => $totalWeight,
-                'total_price' => $totalPrice,
-            ]);
+            $this->processTransactionDetails($transaction, $request->details);
 
             DB::commit();
 
             return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+            return back()->with('error', 'Terjadi kesalahan saat menambahkan transaksi: ' . $e->getMessage())->withInput();
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
+    public function edit(Transaction $transaction) 
     {
         $users = User::where('role', 'user')->get();
         $wasteData = WasteData::all();
@@ -86,56 +58,78 @@ class TransactionController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'status' => 'required|string',
-            'details' => 'required|array|min:1',
-            'details.*.waste_data_id' => 'required|exists:waste_data,id',
-            'details.*.weight' => 'required|numeric|min:0.1',
+    public function update(UpdateTransactionRequest $request, Transaction $transaction) {
         ]);
 
         DB::beginTransaction();
         try {
-            $totalWeight = 0;
-            $totalPrice = 0;
+            $totals = $this->calculateTotals($request->details);
 
             $transaction->update([
                 'user_id' => $request->user_id,
                 'status' => $request->status,
+                'total_weight' => $totals['totalWeight'],
+                'total_price' => $totals['totalPrice'],
             ]);
 
             // Delete old details and create new ones
             $transaction->details()->delete();
-
-            foreach ($request->details as $detail) {
-                $waste = WasteData::find($detail['waste_data_id']);
-                $price = $waste->price_per_kg * $detail['weight'];
-
-                $transaction->details()->create([
-                    'waste_data_id' => $detail['waste_data_id'],
-                    'weight' => $detail['weight'],
-                    'price' => $price,
-                ]);
-
-                $totalWeight += $detail['weight'];
-                $totalPrice += $price;
-            }
-
-            $transaction->update([
-                'total_weight' => $totalWeight,
-                'total_price' => $totalPrice,
-            ]);
+            $this->processTransactionDetails($transaction, $request->details);
 
             DB::commit();
 
             return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+            return back()->with('error', 'Terjadi kesalahan saat memperbarui transaksi: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    /**
+     * Calculate total weight and price from details.
+     *
+     * @param array $details
+     * @return array
+     */
+    private function calculateTotals(array $details): array
+    {
+        $totalWeight = 0;
+        $totalPrice = 0;
+
+        // Eager load waste data to avoid N+1 queries in loop
+        $wasteDataIds = array_column($details, 'waste_data_id');
+        $wasteDataItems = WasteData::find($wasteDataIds)->keyBy('id');
+
+        foreach ($details as $detail) {
+            $waste = $wasteDataItems[$detail['waste_data_id']] ?? null;
+            if ($waste) {
+                $price = $waste->price_per_kg * $detail['weight'];
+                $totalWeight += $detail['weight'];
+                $totalPrice += $price;
+            }
+        }
+
+        return ['totalWeight' => $totalWeight, 'totalPrice' => $totalPrice];
+    }
+
+    /**
+     * Process and store transaction details.
+     *
+     * @param Transaction $transaction
+     * @param array $details
+     */
+    private function processTransactionDetails(Transaction $transaction, array $details): void
+    {
+        $wasteDataIds = array_column($details, 'waste_data_id');
+        $wasteDataItems = WasteData::find($wasteDataIds)->keyBy('id');
+
+        foreach ($details as $detail) {
+            $waste = $wasteDataItems[$detail['waste_data_id']] ?? null;
+            if ($waste) {
+                $price = $waste->price_per_kg * $detail['weight'];
+                $detail['price'] = $price;
+                $transaction->details()->create($detail);
+            }
         }
     }
 

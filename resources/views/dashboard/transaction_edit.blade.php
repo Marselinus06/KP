@@ -57,7 +57,7 @@
               <h5 class="card-title">Waste Details</h5>
               <div id="waste-details-container">
                 @foreach($transaction->details as $index => $detail)
-                <div class="row mb-3 align-items-end">
+                <div class="row mb-3 align-items-end existing-detail">
                     <div class="col-md-5">
                         <label for="details_{{ $index }}_waste_data_id" class="form-label">Waste Type</label>
                         <select class="form-select" name="details[{{ $index }}][waste_data_id]" required>
@@ -89,28 +89,13 @@
       </div>
     </div>
   </section>
+  <p id="waste-data" class="d-none">{!! json_encode($wasteData) !!}</p>
 </main>
 
+@push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
     let detailIndex = {{ count($transaction->details) }};
-    const container = document.getElementById('waste-details-container');
-    const addButton = document.getElementById('add-waste-detail');
-    const wasteData = {!! json_encode($wasteData) !!};
-
-    function addDetailRow() {
-        const row = document.createElement('div');
-        row.classList.add('row', 'mb-3', 'align-items-end');
-        row.innerHTML = `
-            <div class="col-md-5"><label for="details_${detailIndex}_waste_data_id" class="form-label">Waste Type</label><select class="form-select" name="details[${detailIndex}][waste_data_id]" required><option value="" disabled selected>Select Waste Type</option>${wasteData.map(waste => `<option value="${waste.id}">${waste.category} (Rp ${waste.price_per_kg}/kg)</option>`).join('')}</select></div>
-            <div class="col-md-5"><label for="details_${detailIndex}_weight" class="form-label">Weight (kg)</label><input type="number" class="form-control" name="details[${detailIndex}][weight]" step="0.1" min="0.1" required></div>
-            <div class="col-md-2"><button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove()">Remove</button></div>
-        `;
-        container.appendChild(row);
-        detailIndex++;
-    }
-
-    addButton.addEventListener('click', addDetailRow);
-});
 </script>
+<script src="{{ asset('js/transaction-form.js') }}"></script>
+@endpush
 @endsection

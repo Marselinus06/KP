@@ -45,11 +45,11 @@
                     <td>Rp {{ number_format($item->price_per_kg, 0, ',', '.') }}</td>
                     <td>{{ $item->updated_at->format('Y-m-d') }}</td>
                     <td>
-                      <a href="{{ route('waste-data.edit', $item->id) }}" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a>
-                      <form action="{{ route('waste-data.destroy', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Anda yakin ingin menghapus data ini?');">
+                      <a href="{{ route('waste-data.edit', $item->id) }}" class="btn btn-sm btn-primary" title="Edit"><i class="bi bi-pencil-square"></i></a>
+                      <form action="{{ route('waste-data.destroy', $item->id) }}" method="POST" class="delete-form" style="display: inline-block; margin-left: 5px;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                        <button type="submit" class="btn btn-sm btn-danger delete-button" title="Delete"><i class="bi bi-trash"></i></button>
                       </form>
                     </td>
                   </tr>
@@ -70,4 +70,27 @@
   </section>
 
 </main><!-- End #main -->
+
+@push('scripts')
+<script>
+document.addEventListener('click', function(event) {
+    // Gunakan event delegation untuk menangkap klik pada tombol hapus.
+    // Ini akan berfungsi bahkan jika tabel di-render ulang oleh simple-datatables.
+    let target = event.target.closest('.delete-button');
+    
+    if (target) {
+        // Mencegah form dari submit secara otomatis
+        event.preventDefault();
+        
+        if (confirm('Anda yakin ingin menghapus data ini?')) {
+            // Temukan form terdekat dan submit secara manual
+            let form = target.closest('form');
+            if (form) {
+                form.submit();
+            }
+        }
+    }
+    });
+</script>
+@endpush
 @endsection

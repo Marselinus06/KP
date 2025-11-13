@@ -56,7 +56,7 @@
               <h5 class="card-title">Waste Details</h5>
               <div id="waste-details-container">
                 <!-- Waste detail row will be added here by JS -->
-              </div>
+              </div>              
               <button type="button" class="btn btn-info btn-sm mt-2" id="add-waste-detail">Add Waste Item</button>
 
               <div class="mt-4">
@@ -69,40 +69,10 @@
       </div>
     </div>
   </section>
+  <p id="waste-data" class="d-none">{!! json_encode($wasteData) !!}</p>
 </main>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    let detailIndex = 0;
-    const container = document.getElementById('waste-details-container');
-    const addButton = document.getElementById('add-waste-detail');
-    const wasteData = {!! json_encode($wasteData) !!};
-
-    function addDetailRow() {
-        const row = document.createElement('div');
-        row.classList.add('row', 'mb-3', 'align-items-end');
-        row.innerHTML = `
-            <div class="col-md-5">
-                <label for="details_${detailIndex}_waste_data_id" class="form-label">Waste Type</label>
-                <select class="form-select" name="details[${detailIndex}][waste_data_id]" required>
-                    <option value="" disabled selected>Select Waste Type</option>
-                    ${wasteData.map(waste => `<option value="${waste.id}">${waste.category} (Rp ${waste.price_per_kg}/kg)</option>`).join('')}
-                </select>
-            </div>
-            <div class="col-md-5">
-                <label for="details_${detailIndex}_weight" class="form-label">Weight (kg)</label>
-                <input type="number" class="form-control" name="details[${detailIndex}][weight]" step="0.1" min="0.1" required>
-            </div>
-            <div class="col-md-2">
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove()">Remove</button>
-            </div>
-        `;
-        container.appendChild(row);
-        detailIndex++;
-    }
-
-    addButton.addEventListener('click', addDetailRow);
-    addDetailRow(); // Add first row initially
-});
-</script>
+@push('scripts')
+<script src="{{ asset('js/transaction-form.js') }}"></script>
+@endpush
 @endsection

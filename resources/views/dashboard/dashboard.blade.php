@@ -174,4 +174,24 @@
     });
   </script>
 
+  <script>
+    document.addEventListener('click', function(event) {
+        let target = event.target.closest('.delete-button');
+
+        if (target) {
+            event.preventDefault();
+
+            if (confirm('Anda yakin ingin menghapus item ini?')) {
+                let form = target.closest('form');
+                if (form) {
+                    form.submit();
+                }
+            }
+        }
+    });
+  </script>
+
+  
+  @stack('scripts')
+
 </body>
