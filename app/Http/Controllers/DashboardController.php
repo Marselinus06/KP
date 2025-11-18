@@ -13,11 +13,11 @@ class DashboardController extends Controller
     public function home()
     {
         $totalUsers = User::count();
-        $totalWaste = Transaction::sum('total_weight'); // Asumsi ada kolom 'total_weight' di tabel transactions
+        $totalWaste = Transaction::where('status', 'Completed')->sum('total_weight');
         $totalTransactions = Transaction::count();
         $recentTransactions = Transaction::with('user')->latest()->take(5)->get();
 
-        
+
         $userStatsData = User::select(
             DB::raw('COUNT(id) as count'),
             DB::raw("DATE_FORMAT(created_at, '%b') as month")

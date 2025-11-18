@@ -29,7 +29,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{ $totalUsers ?? 'N/A' }}</h6>
-                      <span class="text-muted small pt-2 ps-1">Total Pengguna</span>
+                      <span class="text-muted small pt-2 ps-1">Total Users</span>
                     </div>
                   </div>
                 </div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{ $totalWaste ?? 0 }}<span class="text-muted small">kg</span></h6>
-                      <span class="text-muted small pt-2 ps-1">Sampah Terkumpul</span>
+                      <span class="text-muted small pt-2 ps-1">Collected Waste</span>
                     </div>
                   </div>
                 </div>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{ $totalTransactions ?? 0 }}</h6>
-                      <span class="text-muted small pt-2 ps-1">Transaksi</span>
+                      <span class="text-muted small pt-2 ps-1">Transactions</span>
                     </div>
                   </div>
                 </div>
@@ -74,7 +74,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">Statistik Pengguna</h5>
+                  <h5 class="card-title">User Statistics</h5>
                   <!-- Line Chart -->
                   <div id="reportsChart"></div>
                   <script>

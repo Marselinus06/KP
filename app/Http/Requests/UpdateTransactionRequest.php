@@ -11,7 +11,15 @@ class UpdateTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+
+        $transaction = $this->route('transaction');
+
+        if (!$transaction) {
+            return false;
+        }
+
+        return $this->user()->role === 'admin'
+            || $this->user()->id === $transaction->user_id;
     }
 
     /**
@@ -21,6 +29,7 @@ class UpdateTransactionRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'user_id' => 'required|exists:users,id',
             'status' => 'required|string',

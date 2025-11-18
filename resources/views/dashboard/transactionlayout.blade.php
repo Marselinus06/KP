@@ -30,7 +30,8 @@
             <table class="table datatable">
               <thead>
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">No.</th>
+                  <th scope="col">Transaction ID</th>
                   <th scope="col">User</th>
                   <th scope="col">Date</th>
                   <th scope="col">Total Weight (kg)</th>
@@ -40,17 +41,19 @@
                 </tr>
               </thead>
               <tbody>
-                @forelse ($transactions as $transaction)
+                @forelse ($transactions as $index => $transaction)
                   <tr>
-                    <th scope="row">#{{ $transaction->id }}</th>
+                    <th scope="row">{{ $index + 1 }}</th>
+                    <td>#{{ $transaction->id }}</td>
                     <td>{{ $transaction->user->name ?? 'N/A' }}</td>
                     <td>{{ $transaction->created_at->format('Y-m-d') }}</td>
                     <td>{{ $transaction->total_weight }}</td>
                     <td>Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</td>
                     <td><span class="badge bg-{{ $transaction->status == 'Completed' ? 'success' : 'warning' }}">{{ $transaction->status }}</span></td>
                     <td>
+                      <a href="{{ route('transactions.edit', $transaction->id) }}" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a>
                       <a href="{{ route('transactions.show', $transaction->id) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
-                      <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Anda yakin ingin menghapus transaksi ini?');">
+                      <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this transaction?');">
                         @csrf                        
                         @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
@@ -59,7 +62,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="7" class="text-center">No transaction data.</td>
+                    <td colspan="8" class="text-center">No transaction data.</td>
                   </tr>
                 @endforelse
               </tbody>

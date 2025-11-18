@@ -4,7 +4,7 @@
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h1>Detail Transaksi</h1>
+    <h1>Transaction Details</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
@@ -19,14 +19,14 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Transaksi #{{ $transaction->id }}</h5>
+            <h5 class="card-title">Transaction #{{ $transaction->id }}</h5>
 
             <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Pengguna:</div>
+                <div class="col-md-3 fw-bold">User:</div>
                 <div class="col-md-9">{{ $transaction->user->name }}</div>
             </div>
             <div class="row mb-3">
-                <div class="col-md-3 fw-bold">Tanggal:</div>
+                <div class="col-md-3 fw-bold">Date:</div>
                 <div class="col-md-9">{{ $transaction->created_at->format('d F Y, H:i') }}</div>
             </div>
             <div class="row mb-3">
@@ -35,7 +35,7 @@
             </div>
 
             <hr>
-            <h5 class="card-title">Rincian Sampah</h5>
+            <h5 class="card-title">Waste Details</h5>
 
             <table class="table">
                 <thead>
@@ -66,7 +66,7 @@
             </table>
 
             <div class="text-end mt-4">
-                <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Kembali ke Daftar</a>
+                <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Back to List</a>
             </div>
           </div>
         </div>

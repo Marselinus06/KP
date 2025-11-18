@@ -1,4 +1,4 @@
-@extends('dashboard.dashboard')
+@extends('dashboard.layouts.main')
 
 @section('main')
 <main id="main" class="main">
@@ -49,6 +49,7 @@
                   <select class="form-select" id="status" name="status" required>
                     <option value="Pending" {{ old('status', $transaction->status) == 'Pending' ? 'selected' : '' }}>Pending</option>
                     <option value="Completed" {{ old('status', $transaction->status) == 'Completed' ? 'selected' : '' }}>Completed</option>
+                    <option value="Cancelled" {{ old('status', $transaction->status) == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
                   </select>
                 </div>
               </div>
@@ -62,8 +63,8 @@
                         <label for="details_{{ $index }}_waste_data_id" class="form-label">Waste Type</label>
                         <select class="form-select" name="details[{{ $index }}][waste_data_id]" required>
                             <option value="" disabled>Select Waste Type</option>
-                            @foreach($wasteData as $waste)
-                                <option value="{{ $waste->id }}" {{ old("details.{$index}.waste_data_id", $detail->waste_data_id) == $waste->id ? 'selected' : '' }}>{{ $waste->category }} (Rp {{ $waste->price_per_kg }}/kg)</option>
+                            @foreach($wasteData as $wasteItem)
+                                <option value="{{ $wasteItem->id }}" data-price="{{ $wasteItem->price_per_kg }}" {{ old("details.{$index}.waste_data_id", $detail->waste_data_id) == $wasteItem->id ? 'selected' : '' }}>{{ $wasteItem->category }} (Rp {{ number_format($wasteItem->price_per_kg, 0, ',', '.') }}/kg)</option>
                             @endforeach
                         </select>
                     </div>
@@ -84,18 +85,58 @@
                 <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Cancel</a>
               </div>
             </form>
-          </div>
+          </div> {{-- End card-body --}}
+        </div> {{-- End card --}}
+      </div> {{-- End col-lg-12 --}}
+    </div> {{-- End row --}}
+  </section> {{-- End section --}}
+
+  {{-- Template untuk satu baris item sampah baru (disembunyikan) --}}
+  <template id="waste-item-template">
+      <div class="row mb-3 align-items-end waste-item-row">
+        <div class="col-md-5">
+            <label class="form-label">Waste Type</label>
+            <select class="form-select" name="details[0][waste_data_id]" required>
+                <option value="" disabled selected>Select Waste Type</option>
+                @foreach($wasteData as $wasteItem)
+                    <option value="{{ $wasteItem->id }}" data-price="{{ $wasteItem->price_per_kg }}">{{ $wasteItem->category }} (Rp {{ number_format($wasteItem->price_per_kg, 0, ',', '.') }}/kg)</option>
+                @endforeach
+            </select>
         </div>
+        <div class="col-md-5">
+            <label class="form-label">Weight (kg)</label>
+            <input type="number" class="form-control" name="details[0][weight]" step="0.1" min="0.1" required>
+        </div>
+          <div class="col-md-2">
+              <button type="button" class="btn btn-danger btn-sm remove-waste-item">Remove</button>
+          </div>
       </div>
-    </div>
-  </section>
-  <p id="waste-data" class="d-none">{!! json_encode($wasteData) !!}</p>
+  </template>
 </main>
 
 @push('scripts')
 <script>
-    let detailIndex = {{ count($transaction->details) }};
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('waste-details-container');
+        const addButton = document.getElementById('add-waste-detail');
+        const template = document.getElementById('waste-item-template');
+        let wasteItemIndex = {{ count($transaction->details) }}; // Inisialisasi dengan jumlah detail yang sudah ada
+
+        addButton.addEventListener('click', function () {
+            // Clone seluruh konten dari template
+            const newRow = template.content.cloneNode(true);
+
+            // Update 'name' attribute untuk select dan input
+            const select = newRow.querySelector('select');
+            const input = newRow.querySelector('input');
+            select.name = `details[${wasteItemIndex}][waste_data_id]`;
+            input.name = `details[${wasteItemIndex}][weight]`;
+
+            newRow.querySelector('.remove-waste-item').addEventListener('click', () => newRow.remove()); // Tambahkan event listener untuk tombol remove
+            container.appendChild(newRow);
+            wasteItemIndex++;
+        });
+    });
 </script>
-<script src="{{ asset('js/transaction-form.js') }}"></script>
 @endpush
 @endsection

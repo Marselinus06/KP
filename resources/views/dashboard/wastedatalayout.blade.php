@@ -26,6 +26,13 @@
               </a>
             </div>
 
+            @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+
             <!-- Table with stripped rows -->
             <table class="table datatable">
               <thead>
@@ -55,7 +62,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="5" class="text-center">{{ __('Tidak ada data jenis sampah.') }}</td>
+                    <td colspan="5" class="text-center">{{ __('No waste data available.') }}</td>
                   </tr>
                 @endforelse
               </tbody>
@@ -82,7 +89,7 @@ document.addEventListener('click', function(event) {
         // Mencegah form dari submit secara otomatis
         event.preventDefault();
         
-        if (confirm('Anda yakin ingin menghapus data ini?')) {
+        if (confirm('Are you sure you want to delete this data?')) {
             // Temukan form terdekat dan submit secara manual
             let form = target.closest('form');
             if (form) {

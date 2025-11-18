@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\WasteData;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTransactionRequest;
+use Illuminate\Database\QueryException;
 use App\Http\Requests\UpdateTransactionRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -27,6 +28,10 @@ class TransactionController extends Controller
     }
 
     public function store(StoreTransactionRequest $request) {
+        // Pastikan waste_data_id benar-benar ada
+        $request->validate([
+            'details.*.waste_data_id' => 'exists:waste_data,id',
+        ]);
         DB::beginTransaction();
         try {
             $totals = $this->calculateTotals($request->details);
@@ -58,8 +63,12 @@ class TransactionController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateTransactionRequest  $request
+     * @param  \App\Models\Transaction  $transaction
+     */
     public function update(UpdateTransactionRequest $request, Transaction $transaction) {
-        ]);
 
         DB::beginTransaction();
         try {
@@ -143,10 +152,18 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         try {
+            // Hapus detail transaksi terlebih dahulu jika ada foreign key constraint
+            $transaction->details()->delete();
             $transaction->delete();
             return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil dihapus.');
+        } catch (QueryException $e) {
+            // Cek jika error disebabkan oleh foreign key constraint (SQLSTATE 23000)
+            if ($e->getCode() == 23000) {
+                return back()->with('error', 'Tidak dapat menghapus transaksi karena masih memiliki detail terkait.');
+            }
+            return back()->with('error', 'Terjadi kesalahan saat menghapus transaksi: ' . $e->getMessage());
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menghapus transaksi.');
+            return back()->with('error', 'Terjadi kesalahan yang tidak terduga: ' . $e->getMessage());
         }
     }
 }

@@ -11,7 +11,13 @@ class StoreTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        // Jika pengguna adalah admin, izinkan mereka membuat transaksi untuk siapa pun.
+        if ($this->user()->role === 'admin') {
+            return true;
+        }
+
+        // Jika bukan admin, pengguna hanya boleh membuat transaksi untuk diri mereka sendiri.
+        return $this->user()->id == $this->input('user_id');
     }
 
     /**

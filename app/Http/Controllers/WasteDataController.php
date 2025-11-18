@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\WasteData;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class WasteDataController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'role:admin']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -37,7 +43,7 @@ class WasteDataController extends Controller
         WasteData::create($request->all());
 
         return redirect()->route('waste-data.index')
-                         ->with('success', 'Jenis sampah berhasil ditambahkan.');
+                         ->with('success', 'Waste type added successfully.');
     }
 
     /**
@@ -70,7 +76,7 @@ class WasteDataController extends Controller
         $wasteData->update($request->all());
 
         return redirect()->route('waste-data.index')
-                         ->with('success', 'Data sampah berhasil diperbarui.');
+                         ->with('success', 'Waste data updated successfully.');
     }
 
     /**
@@ -78,9 +84,18 @@ class WasteDataController extends Controller
      */
     public function destroy(WasteData $wasteData)
     {
-        $wasteData->delete();
-
-        return redirect()->route('waste-data.index')
-                         ->with('success', 'Data sampah berhasil dihapus.');
+        try {
+            $wasteData->delete();
+            return redirect()->route('waste-data.index')->with('success', 'Waste data deleted successfully.');
+        } catch (QueryException $e) {
+            // Cek jika error disebabkan oleh foreign key constraint (SQLSTATE 23000)
+            if ($e->getCode() == 23000) {
+                return back()->with('error', 'Cannot delete this waste type because it is used in other transactions.');
+            }
+            // Tangani error database lainnya
+            return back()->with('error', 'An error occurred while deleting waste data: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            return back()->with('error', 'An unexpected error occurred: ' . $e->getMessage());
+        }
     }
 }

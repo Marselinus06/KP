@@ -48,7 +48,7 @@
                   <td>
                     <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a>
                     <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                      @csrf
+                    @csrf
                       @method('DELETE')                      
                       <button type="submit" class="btn btn-sm btn-danger" {{ $user->id === 1 ? 'disabled' : '' }}><i class="bi bi-trash"></i></button>
                     </form>
